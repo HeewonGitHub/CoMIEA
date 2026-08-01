@@ -316,6 +316,9 @@ eps <- 1e-8
 
 SCORE<-matrix(seq(0,0,length=(NoPM+1)),ncol=(NoPM+1))
 colnames(SCORE)<-c(paste("pm",c(1:NoPM),sep=""),"Pvalue")
+THETA<-matrix(numeric(p*n),ncol=n)
+rownames(THETA)<-gene_names
+colnames(THETA)<-paste0("Sample",1:n)
 ```
 
 ---
@@ -328,10 +331,6 @@ For each sample, this step loads a sample-specific `BETA` matrix. Rows represent
 for (i in 1:n) { # Open loof i
 BETA<-as.matrix(read.table(paste("ToyDATA_CoMIEA\\BETA_Sample",i,".csv",sep=""),sep=","))
 gene_names <-colnames(BETA)
-
-THETA<-matrix(numeric(p*n),ncol=n)
-rownames(THETA)<-gene_names
-colnames(THETA)<-paste0("Sample",1:n)
 ```
 
 ---
