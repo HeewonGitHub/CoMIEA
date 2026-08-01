@@ -316,6 +316,7 @@ eps <- 1e-8
 
 SCORE<-matrix(seq(0,0,length=(NoPM+1)),ncol=(NoPM+1))
 colnames(SCORE)<-c(paste("pm",c(1:NoPM),sep=""),"Pvalue")
+
 THETA<-matrix(numeric(p*n),ncol=n)
 rownames(THETA)<-gene_names
 colnames(THETA)<-paste0("Sample",1:n)
@@ -665,12 +666,13 @@ SCORE[,pm]<-mean(S[PWgenes])
 SCORE[,pm]<-mean(S[sample(1:length(S),length(PWgenes))])
 }
 } 
+# Normalization
 nSCORE<-SCORE
 nSCORE[]<-0
-nSCORE[SCORE[,1]>0,1]<-SCORE[SCORE[,1]>0,1]/mean(abs(SCORE[,2:NoPM][SCORE[,2:NoPM]>0]))
-nSCORE[SCORE[,1]<0,1]<-SCORE[SCORE[,1]<0,1]/mean(abs(SCORE[,2:NoPM][SCORE[,2:NoPM]<0]))
-if (nSCORE[1,1]>0){Pvalue<-sum(nSCORE[1,1]<=nSCORE[-1,1][nSCORE[-1,1]>0])/(NoPM-1)};
-if (nSCORE[1,1]<0){Pvalue<-sum(abs(nSCORE[1,1])<=abs(nSCORE[-1,1][nSCORE[-1,1]<0]))/(NoPM-1)};
+nSCORE[SCORE>0]<-SCORE[SCORE>0]/mean(abs(SCORE[2:NoPM][SCORE[2:NoPM]>0]))
+nSCORE[SCORE<0]<-SCORE[SCORE<0]/mean(abs(SCORE[2:NoPM][SCORE[2:NoPM]<0]))
+if (nSCORE[1]>0){Pvalue<-sum(nSCORE[1]<=nSCORE[-1][nSCORE[-1]>0])/(NoPM-1)};
+if (nSCORE[1]<0){Pvalue<-sum(abs(nSCORE[1])<=abs(nSCORE[-1][nSCORE[-1]<0]))/(NoPM-1)};
 print(Pvalue)
 ```
 
